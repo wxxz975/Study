@@ -15,7 +15,7 @@ typedef struct SeqTable
 
 
 /* 初始化顺序表L */
-Status InitList(SqList *L);
+Status initList(SqList *L);
 
 /* 在顺序L的第i个位置之前插入元素e */
 Status ListInsert(SqList *L, int i, ElemType e);

@@ -1,7 +1,8 @@
 #include "SeqTable.h"
+#include <stdio.h>
 #include <stdlib.h>
 
-Status InitList(SqList *L) {
+Status initList(SqList *L) {
     L->elem = (ElemType *)malloc(LIST_INIT_SIZE * sizeof(ElemType));
     if (!L->elem) exit(OVERFLOW);
     L->length = 0;
@@ -13,13 +14,13 @@ Status InitList(SqList *L) {
 Status ListInsert(SqList *L, int i, ElemType e) {
     if (i < 1 || i > L->length + 1) return ERROR;  // i的范围不对
     if (L->length >= L->listsize) {
-        newbase = (ElemType *)realloc(L->elem, L->listsize + LISTINCREMENT) * sizeof(ElemType)); // 改变L.elem的大小为 指定大小
+        ElemType *newbase = (ElemType *)realloc(L->elem, (L->listsize + LISTINCREMENT) * sizeof(ElemType)); // 改变L.elem的大小为 指定大小
         if (!newbase) exit(OVERFLOW); // 重新分配空间失败
         L->elem = newbase;
         L->listsize += LISTINCREMENT;
     }
     ElemType *q = &(L->elem[i-1]);
-    for(ElemType *p = &(L->elem[L.lengt-1]); p >= q; --p)  
+    for(ElemType *p = &(L->elem[L->length-1]); p >= q; --p) 
         *(p+1) = *p;  // 从最后+1位置开始 每一个都向后移动一个
 
     *q = e;
@@ -41,19 +42,19 @@ Status ListDelete(SqList *L, int i, ElemType *e) {
 
 int LocateElem(SqList L, ElemType e, Status (*compare)(ElemType, ElemType)) {
     int i = 1;  // 记录初始位置
-    ElemType *p = L->elem;      // 从顺序表的首部开始
-    while (i <= L->length && !(*compare)(*p++, e)) ++i;     // 利用compare 函数来比较两者是否相等
-    if (i <= L->length) return i;       // 若小于最大长度则认为有效
+    ElemType *p = L.elem;      // 从顺序表的首部开始
+    while (i <= L.length && !(*compare)(*p++, e)) ++i;     // 利用compare 函数来比较两者是否相等
+    if (i <= L.length) return i;       // 若小于最大长度则认为有效
     else return 0;
 }
 
 void MergeList(SqList La, SqList Lb, SqList *Lc){
-    pa = La->elem; pb = Lb->elem;       // 记录两个顺序表的头部
-    Lc.listsize = Lc.length = La.length + Lb.length;        // 新顺序表的大小
-    pc = Lc->elem = (ElemType *)malloc(Lc.listsize * sizeof(ElemType)); 
+    ElemType *pa = La.elem, *pb = Lb.elem;       // 记录两个顺序表的头部
+    Lc->listsize = Lc->length = La.length + Lb.length;        // 新顺序表的大小
+    ElemType *pc = Lc->elem = (ElemType *)malloc(Lc->listsize * sizeof(ElemType)); 
     if (!Lc->elem) exit(OVERFLOW);
-    pa_last = La->elem + La->length + 1;    // a表的末尾元素+1地址
-    pb_last = Lb->elem + Lb->length + 1;    // b表的末尾元素+1地址
+    ElemType *pa_last = La.elem + La.length + 1;    // a表的末尾元素+1地址
+    ElemType *pb_last = Lb.elem + Lb.length + 1;    // b表的末尾元素+1地址
     while(pa <= pa_last && pb <= pb_last) {
         if(*pa <= *pb) *pc++ = *pa++;       // 将小的元素放前面
         else *pc++ = *pb++;
